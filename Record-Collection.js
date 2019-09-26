@@ -1,8 +1,18 @@
-// Lesson link: https://learn.freecodecamp.org/javascript-algorithms-and-data-structures/basic-javascript/record-collection
+/* 
+Skills developed: nested arrays and objects, global and local variables, array push, object delete, if-else statements.
 
-// IN PROGRESS
+Lesson link: https://learn.freecodecamp.org/javascript-algorithms-and-data-structures/basic-javascript/record-collection
 
-// Setup
+--Prompt--
+Write a function to modify object ("collection"), with inputs {album id, property (prop), value}. 
+Incomplete data should be handled according to these rules:
+    - If prop is "tracks" but the album doesn't have a "tracks"property, create an empty array before adding the new value to the album's corresponding property.
+    - If prop is "tracks" and value isn't empty (""), push the value onto the end of the album's existing tracks array.
+    - If value is empty (""), delete the given prop property from the album.
+
+*/
+
+// Setup (provided by lesson)
 var collection = {
     "2548": {
       "album": "Slippery When Wet",
@@ -28,40 +38,43 @@ var collection = {
       "album": "ABBA Gold"
     }
 };
-// Keep a copy of the collection for tests
+// Create a copy of the collection for tests
 var collectionCopy = JSON.parse(JSON.stringify(collection));
 
-// Only change code below this line
-function updateRecords(id, prop, value) {
-  // case when value is empty
-  if (value=="") {
-    delete collection.id.prop;
-    return collection; // break
-  }
+//// Code I wrote below this line ////
 
-  // if-else prop is "tracks"
-  if (prop == "tracks") {
-    // case when album does not have a "tracks" propery.
-    if (collection[id].hasOwnProperty("tracks")==false) {
-      collection.id[prop] = [];
-    }
-    // case when value is not empty
-    if (value != "") {
+function updateRecords(id, prop, value) {
+  if (value != "") { // case when value is not empty
+    
+    if (prop == "tracks") { // handle differently if prop is "tracks", since collection[...][tracks] is an array.
+      if (collection[id].hasOwnProperty("tracks")==false)
+      {
+        collection[id][prop] = [];
+      }
       collection[id][prop].push(value);
+
+    } else {
+      collection[id][prop] = value;
     }
-  } else {
-    collection[id][prop] = value
+
+  } else { // case when value is empty
+    delete collection[id][prop];
   }
 
   return collection;
 }
 
-// Alter values below to test your code
+
+// Testing results.
 updateRecords(5439, "artist", "ABBA");
-//updateRecords(2468, "tracks", "");
+updateRecords(2468, "tracks", "New Album");
+updateRecords(5439, "tracks", "Take a Chance on Me");
 
 console.log(collectionCopy[5439]["artist"]);
 console.log(collection[5439]["artist"]);
 
-//console.log(collectionCopy[2468]["tracks"]);
-//console.log(collection[2468]["tracks"]);
+console.log(collectionCopy[2468]["tracks"]);
+console.log(collection[2468]["tracks"]);
+
+console.log(collectionCopy[5439]["tracks"]);
+console.log(collection[5439]["tracks"]);
